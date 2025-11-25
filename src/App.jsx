@@ -8,7 +8,7 @@ function App() {
   useEffect(() => {
     async function loadData() {
       const data = await getBalloonData();
-      setBalloons(data);
+      setBalloons(data || []);
       console.log("Frontend received:", data);
     }
     loadData();
@@ -22,7 +22,7 @@ function App() {
       {/* <h1>WindBorne Balloon Data</h1>
       {!balloons && <p>Loading...</p>}
       {balloons && <pre>{JSON.stringify(balloons, null, 2)}</pre>} */}
-      <BalloonGlobe />
+      <BalloonGlobe markers={balloons || []} />
     </div>
   );
 }

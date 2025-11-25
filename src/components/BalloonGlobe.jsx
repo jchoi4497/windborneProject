@@ -3,19 +3,8 @@ import ReactGlobe from "react-globe.gl";
 import * as THREE from "three";
 import { getBalloonData } from "../api/balloons";
 
-export default function BalloonGlobe({}) {
+export default function BalloonGlobe({ markers }) {
   const globeRef = useRef();
-  const [markers, setMarkers] = useState([]);
-
-  useEffect(() => {
-    async function loadMarkers() {
-      const data = await getBalloonData();
-      if (!data) return;
-
-      setMarkers(data);
-    }
-    loadMarkers();
-  }, []);
 
   useEffect(() => {
     if (!globeRef.current) return;
@@ -62,7 +51,7 @@ export default function BalloonGlobe({}) {
         globeImageUrl="https://unpkg.com/three-globe@2.27.4/example/img/earth-day.jpg"
         backgroundImageUrl="https://unpkg.com/three-globe/example/img/night-sky.png" // 🌟 stars background
         atmosphereColor="skyblue"
-        atmosphereAltitude={0.25}
+        atmosphereAltitude={0.2}
       />
     </div>
   );

@@ -55,6 +55,3 @@ app.get("/balloons", async (req, res) => {
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}`)
 );
-
-//check if it has length for 3 !first24
-// Websocket, setInterval, long polling
