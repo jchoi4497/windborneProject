@@ -37,7 +37,7 @@ app.get("/balloons", async (req, res) => {
       formattedBalloons.push({
         lat: latitude,
         lng: longitude,
-        altitude: altitude / 100 || 0.02,
+        altitude: altitude / 10000 || 0.02,
         color: "#ffffff",
         city: `Hours Ago ${i}`,
         hour,
