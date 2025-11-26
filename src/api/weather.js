@@ -1,4 +1,4 @@
-// src/api/weather.js
+// src/api/weather.js api issues
 export async function getWeatherForBalloons(balloons) {
   const apiKey = process.env.REACT_APP_WINDBORNE_WEATHER_API_KEY;
 
