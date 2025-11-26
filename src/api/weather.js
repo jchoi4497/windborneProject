@@ -1,24 +1,18 @@
-// src/api/weather.js api issues
+// src/api/weather.js
 export async function getWeatherForBalloons(balloons) {
-  const apiKey = process.env.REACT_APP_WINDBORNE_WEATHER_API_KEY;
+  try {
+    const res = await fetch("/.netlify/functions/weather", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ balloons }),
+    });
 
-  return Promise.all(
-    balloons.map(async (b) => {
-      try {
-        const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${b.lat}&lon=${b.lng}&units=metric&appid=${apiKey}`
-        );
-        if (!res.ok) throw new Error("Weather API failed");
-        const data = await res.json();
-
-        return {
-          ...b,
-          temperature: data.main.temp,
-          weather: data.weather[0].main,
-        };
-      } catch {
-        return { ...b, temperature: null, weather: null };
-      }
-    })
-  );
+    if (!res.ok) throw new Error("Weather function failed");
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    // Fallback: return balloons with null weather
+    return balloons.map((b) => ({ ...b, temperature: null, weather: null }));
+  }
 }
