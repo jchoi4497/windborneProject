@@ -11,6 +11,7 @@ export async function handler(event) {
           );
           if (!res.ok) throw new Error("Weather API failed");
           const data = await res.json();
+          console.log(data);
 
           return {
             ...b,

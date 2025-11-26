@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import ReactGlobe from "react-globe.gl";
 import * as THREE from "three";
 
-export default function BalloonGlobe({ markers }) {
+export default function BalloonGlobe({ markers, loading }) {
   const globeRef = useRef();
 
   // Show pop up when data unavailable
   useEffect(() => {
-    if (!markers || markers.length === 0) {
+    if (!loading && (!markers || markers.length === 0)) {
       alert("Balloon data is currently unavailable");
     }
   }, [markers]);

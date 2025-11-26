@@ -4,6 +4,7 @@ import BalloonGlobe from "./components/BalloonGlobe";
 
 function App() {
   const [balloons, setBalloons] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -23,6 +24,7 @@ function App() {
         }
 
         setBalloons(balloonsWeather);
+        setLoading(false);
       } catch (err) {
         console.error("Error loading balloons:", err);
         setBalloons([]);
@@ -37,7 +39,7 @@ function App() {
 
   return (
     <div>
-      <BalloonGlobe markers={balloons || []} />
+      <BalloonGlobe markers={balloons || []} loading={loading} />
     </div>
   );
 }
