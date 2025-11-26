@@ -40,7 +40,7 @@ export async function handler() {
     console.error(err);
 
     return {
-      statusCode: 500,
+      statusCode: 200,
       body: JSON.stringify([]),
     };
   }
