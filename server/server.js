@@ -1,6 +1,10 @@
 import express from "express";
 import cors from "cors";
 
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const app = express();
 const PORT = 3000;
 const BALLOON_URL = "https://a.windbornesystems.com/treasure/00.json";
@@ -48,16 +52,17 @@ app.get("/balloons", async (req, res) => {
 });
 
 app.post("/weather", async (req, res) => {
-  try {
-    const balloons = req.body;
-    const apiKey = process.env.VITE_APP_WINDBORNE_WEATHER_API_KEY;
+  const balloons = req.body;
 
+  try {
+    const apiKey = process.env.VITE_APP_WINDBORNE_WEATHER_API_KEY;
     const results = await Promise.all(
       balloons.map(async (b) => {
         try {
           const res = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${b.lat}&lon=${b.lng}&units=metric&appid=${apiKey}`
           );
+
           if (!res.ok) throw new Error("Weather API failed");
           const data = await res.json();
 
@@ -74,9 +79,8 @@ app.post("/weather", async (req, res) => {
 
     // if (!results.ok) throw new Error("Weather function failed");
     // const data = await results.json();
-    res.json(results);
+    res.status(200).json(results);
   } catch (error) {
-    console.error(error);
     // Fallback: return balloons with null weather
     return balloons.map((b) => ({ ...b, temperature: null, weather: null }));
   }

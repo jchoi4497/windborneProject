@@ -10,7 +10,7 @@ export default function BalloonGlobe({ markers, loading }) {
     if (!loading && (!markers || markers.length === 0)) {
       alert("Balloon data is currently unavailable");
     }
-  }, [markers]);
+  }, [loading]);
 
   // Add clouds to globe
   useEffect(() => {

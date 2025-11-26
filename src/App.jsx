@@ -23,11 +23,11 @@ function App() {
       }
 
       setBalloons(balloonsWeather);
-      setLoading(false);
     } catch (err) {
       console.error("Error loading balloons:", err);
       setBalloons([]);
     }
+    setLoading(false);
   }
 
   useEffect(() => {

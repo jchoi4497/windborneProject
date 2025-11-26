@@ -30,8 +30,6 @@ export async function handler() {
       });
     }
 
-    console.log("Formatted balloons:", formattedBalloons.length);
-    // Netlify response
     return {
       statusCode: 200,
       body: JSON.stringify(formattedBalloons),
