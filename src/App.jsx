@@ -9,7 +9,7 @@ function App() {
     async function loadData() {
       try {
         // Fetch balloon data from Netlify function
-        const res = await fetch("/.netlify/functions/balloons");
+        const res = await fetch("netlify/functions/balloons");
         if (!res.ok) throw new Error("Failed to fetch balloon data");
         const data = await res.json();
 
@@ -29,15 +29,6 @@ function App() {
       }
     }
 
-    // async function loadData() {
-    //   const data = await getBalloonData();
-    //   let balloonsWeather = [];
-    //   if (data && data.length > 0) {
-    //     balloonsWeather = await getWeatherForBalloons(data);
-    //   }
-    //   setBalloons(balloonsWeather);
-    //   console.log("Frontend received:", balloonsWeather);
-    // }
     loadData();
     const intervalId = setInterval(loadData, 5 * 60 * 1000);
 
