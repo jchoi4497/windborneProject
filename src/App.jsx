@@ -6,31 +6,31 @@ function App() {
   const [balloons, setBalloons] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        // Fetch balloon data from Netlify function
-        const res = await fetch("/.netlify/functions/balloons");
-        if (!res.ok) throw new Error("Failed to fetch balloon data");
-        const data = await res.json();
+  async function loadData() {
+    try {
+      // Fetch balloon data from Netlify function
+      const res = await fetch(`${import.meta.env.VITE_API_ROUTE}/balloons`);
+      if (!res.ok) throw new Error("Failed to fetch balloon data");
+      const data = await res.json();
 
-        // Optionally fetch weather for balloons
-        let balloonsWeather = [];
+      // Optionally fetch weather for balloons
+      let balloonsWeather = [];
 
-        if (data && data.length > 0) {
-          balloonsWeather = await getWeatherForBalloons(data);
-        } else {
-          balloonsWeather = [];
-        }
-
-        setBalloons(balloonsWeather);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error loading balloons:", err);
-        setBalloons([]);
+      if (data && data.length > 0) {
+        balloonsWeather = await getWeatherForBalloons(data);
+      } else {
+        balloonsWeather = [];
       }
-    }
 
+      setBalloons(balloonsWeather);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error loading balloons:", err);
+      setBalloons([]);
+    }
+  }
+
+  useEffect(() => {
     loadData();
     const intervalId = setInterval(loadData, 5 * 60 * 1000);
 
