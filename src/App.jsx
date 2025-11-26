@@ -9,7 +9,7 @@ function App() {
     async function loadData() {
       try {
         // Fetch balloon data from Netlify function
-        const res = await fetch("netlify/functions/balloons");
+        const res = await fetch("/.netlify/functions/balloons");
         if (!res.ok) throw new Error("Failed to fetch balloon data");
         const data = await res.json();
 
