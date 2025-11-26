@@ -41,7 +41,7 @@ export async function handler() {
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Could not fetch data" }),
+      body: JSON.stringify([]),
     };
   }
 }
