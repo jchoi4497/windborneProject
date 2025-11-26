@@ -1,14 +1,5 @@
-import express from "express";
-import cors from "cors";
-
-const app = express();
-const PORT = 3000;
-const BALLOON_URL = "https://a.windbornesystems.com/treasure/00.json";
-
-// Allow requests from any origin (for dev)
-app.use(cors());
-
-app.get("/balloons", async (req, res) => {
+export async function handler() {
+  const BALLOON_URL = "https://a.windbornesystems.com/treasure/00.json";
   try {
     const response = await fetch(BALLOON_URL);
     if (!response.ok) throw new Error(`Failed to fetch ${BALLOON_URL}`);
@@ -39,14 +30,18 @@ app.get("/balloons", async (req, res) => {
       });
     }
 
-    res.json(formattedBalloons);
     console.log("Formatted balloons:", formattedBalloons.length);
+    // Netlify response
+    return {
+      statusCode: 200,
+      body: JSON.stringify(formattedBalloons),
+    };
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Could not fetch data" });
-  }
-});
 
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
-);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Could not fetch data" }),
+    };
+  }
+}
