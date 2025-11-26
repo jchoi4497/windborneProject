@@ -1,6 +1,6 @@
 export async function handler(event) {
   try {
-    const balloons = event.body;
+    const balloons = JSON.parse(event.body);
     const apiKey = process.env.VITE_APP_WINDBORNE_WEATHER_API_KEY;
 
     const results = await Promise.all(
