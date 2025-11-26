@@ -21,13 +21,10 @@ app.get("/balloons", async (req, res) => {
     const formattedBalloons = [];
 
     for (let i = 0; i < first24.length; i++) {
-      let latitude = first24[i][0];
-      let longitude = first24[i][1];
-      let altitude = first24[i][2];
-      let hour = i;
-      console.log(
-        `Hours Ago ${i}: lat=${latitude}, lon=${longitude}, alt=${altitude}`
-      );
+      const latitude = first24[i][0];
+      const longitude = first24[i][1];
+      const altitude = first24[i][2];
+      const hour = i;
 
       if (latitude === null || longitude === null || altitude === null) {
         console.warn(`Data for ${i} hours ago corrupted`, first24[i]);
@@ -37,9 +34,7 @@ app.get("/balloons", async (req, res) => {
       formattedBalloons.push({
         lat: latitude,
         lng: longitude,
-        altitude: altitude / 10000 || 0.02,
-        color: "#ffffff",
-        city: `Hours Ago ${i}`,
+        altitude: altitude / 10000,
         hour,
       });
     }
