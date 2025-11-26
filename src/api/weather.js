@@ -6,6 +6,7 @@ export async function getWeatherForBalloons(balloons) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ balloons }),
     });
+    
 
     if (!res.ok) throw new Error("Weather function failed");
     const data = await res.json();

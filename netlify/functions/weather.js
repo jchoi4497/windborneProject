@@ -1,5 +1,3 @@
-// netlify/functions/weather.js
-
 export async function handler(event) {
   try {
     const { balloons } = JSON.parse(event.body);
