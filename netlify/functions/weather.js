@@ -2,7 +2,6 @@ export async function handler(event) {
   try {
     const balloons = JSON.parse(event.body);
     const apiKey = process.env.VITE_APP_WINDBORNE_WEATHER_API_KEY;
-
     const results = [];
 
     // We only do the first 8 to avoid the 10-second Netlify timeout
@@ -25,9 +24,19 @@ export async function handler(event) {
       }
     }
 
+    // 2. Take the balloons from index 8 to 24 (the ones we skipped)
+    const remainingBalloons = balloons.slice(8).map((b) => ({
+      ...b,
+      temperature: null, // No weather for these to save time
+      weather: null,
+    }));
+
+    // 3. Combine them so you have the full 24 again
+    const finalData = [...results, ...remainingBalloons];
+
     return {
       statusCode: 200,
-      body: JSON.stringify(results),
+      body: JSON.stringify(finalData),
     };
   } catch (err) {
     return {
