@@ -2,15 +2,8 @@ import { useEffect, useRef } from "react";
 import ReactGlobe from "react-globe.gl";
 import * as THREE from "three";
 
-export default function BalloonGlobe({ markers, loading }) {
+export default function BalloonGlobe({ markers, loading, error, metadata }) {
   const globeRef = useRef();
-
-  // Show pop up when data unavailable
-  useEffect(() => {
-    if (!loading && (!markers || markers.length === 0)) {
-      alert("Balloon data is currently unavailable");
-    }
-  }, [loading]);
 
   // Add clouds to globe
   useEffect(() => {
@@ -53,7 +46,81 @@ export default function BalloonGlobe({ markers, loading }) {
   };
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div style={{ width: "100%", height: "100vh", position: "relative" }}>
+      {/* Status Banner */}
+      {(error || metadata?.corrupted > 0 || (!loading && markers?.length === 0)) && (
+        <div
+          style={{
+            position: "absolute",
+            top: 20,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1000,
+            padding: "12px 24px",
+            borderRadius: "8px",
+            backgroundColor: error
+              ? "rgba(220, 38, 38, 0.95)"
+              : markers?.length === 0
+              ? "rgba(234, 179, 8, 0.95)"
+              : "rgba(59, 130, 246, 0.95)",
+            color: "white",
+            fontFamily: "Arial, sans-serif",
+            fontSize: "14px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+            maxWidth: "90%",
+          }}
+        >
+          {error ? (
+            <div>
+              <strong>⚠️ Connection Error:</strong> {error}
+              <br />
+              <small>
+                Make sure your server is running on{" "}
+                {import.meta.env.VITE_API_ROUTE || "localhost:3000"}
+              </small>
+            </div>
+          ) : markers?.length === 0 ? (
+            <div>
+              <strong>🎈 No Balloons in Flight</strong>
+              <br />
+              <small>Waiting for balloon data to become available...</small>
+            </div>
+          ) : metadata?.corrupted > 0 ? (
+            <div>
+              <strong>ℹ️ Partial Data:</strong> Showing {metadata.valid} of{" "}
+              {metadata.total} balloons
+              <br />
+              <small>
+                {metadata.corrupted} balloon{metadata.corrupted > 1 ? "s" : ""}{" "}
+                had corrupted data (hours:{" "}
+                {metadata.corruptedHours.join(", ")})
+              </small>
+            </div>
+          ) : null}
+        </div>
+      )}
+
+      {/* Loading Indicator */}
+      {loading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
+            padding: "20px 40px",
+            borderRadius: "8px",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            color: "white",
+            fontFamily: "Arial, sans-serif",
+            fontSize: "16px",
+          }}
+        >
+          Loading balloon data...
+        </div>
+      )}
+
       <ReactGlobe
         ref={globeRef}
         pointsData={markers || []}
